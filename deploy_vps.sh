@@ -50,6 +50,7 @@ fi
 
 # 5. Build Application
 echo -e "${GREEN}[5/7] Installing Dependencies & Building...${NC}"
+cd $APP_DIR/frontend
 npm install
 npm run build
 
@@ -60,7 +61,7 @@ server {
     listen 80;
     server_name $DOMAIN www.$DOMAIN;
 
-    root $APP_DIR/dist;
+    root $APP_DIR/frontend/dist;
     index index.html;
 
     location / {
