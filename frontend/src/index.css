@@ -1,0 +1,535 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ahmad Qaoud Brand Design System - Premium Corporate */
+
+@layer base {
+  :root {
+    /* Primary Brand Colors - Deep Navy & Gold */
+    --background: 210 20% 98%;
+    --foreground: 220 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 12%;
+
+    /* Navy Blue - Trust & Professionalism */
+    --primary: 217 71% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Light Gray-Blue */
+    --secondary: 210 25% 95%;
+    --secondary-foreground: 220 25% 12%;
+
+    --muted: 210 20% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Gold Accent - Value & Excellence */
+    --accent: 38 75% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 217 71% 25%;
+
+    --radius: 0.75rem;
+
+    /* Custom Brand Tokens */
+    --gold: 38 75% 50%;
+    --gold-light: 38 70% 65%;
+    --navy: 217 71% 25%;
+    --navy-light: 217 50% 40%;
+    --navy-dark: 217 80% 15%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(217, 71%, 25%), hsl(217, 50%, 40%));
+    --gradient-gold: linear-gradient(135deg, hsl(38, 75%, 50%), hsl(38, 70%, 65%));
+    --gradient-hero: linear-gradient(180deg, hsl(210, 20%, 98%) 0%, hsl(210, 25%, 95%) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(220 25% 12% / 0.08);
+    --shadow-card: 0 8px 30px -8px hsl(220 25% 12% / 0.12);
+    --shadow-elevated: 0 20px 50px -12px hsl(220 25% 12% / 0.15);
+
+    /* Sidebar */
+    --sidebar-background: 217 71% 25%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 38 75% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 50% 35%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 217 60% 30%;
+    --sidebar-ring: 38 75% 50%;
+  }
+
+  .dark {
+    /* Premium Slate Dark - Professional & Comfortable */
+    --background: 220 16% 10%;
+    --foreground: 210 40% 98%;
+
+    /* Cards - Slightly lighter for depth */
+    --card: 220 14% 14%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 14% 14%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Warm Amber/Gold */
+    --primary: 38 92% 50%;
+    --primary-foreground: 220 16% 10%;
+
+    /* Secondary - Subtle slate */
+    --secondary: 220 12% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 12% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    /* Accent - Amber glow */
+    --accent: 38 80% 55%;
+    --accent-foreground: 220 16% 10%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders - Visible but subtle */
+    --border: 220 12% 20%;
+    --input: 220 12% 22%;
+    --ring: 38 92% 50%;
+
+    /* Brand Colors */
+    --gold: 38 92% 50%;
+    --gold-light: 38 88% 65%;
+    --navy: 220 16% 10%;
+    --navy-light: 220 14% 16%;
+    --navy-dark: 224 25% 6%;
+
+    /* Gradients - Warmer */
+    --gradient-primary: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(28, 90%, 55%));
+    --gradient-gold: linear-gradient(135deg, hsl(38, 92%, 50%), hsl(38, 88%, 65%));
+    --gradient-hero: linear-gradient(180deg, hsl(220, 16%, 10%) 0%, hsl(220, 14%, 14%) 100%);
+
+    /* Shadows - Softer */
+    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
+    --shadow-card: 0 8px 30px -8px hsl(0 0% 0% / 0.4);
+    --shadow-elevated: 0 20px 50px -12px hsl(0 0% 0% / 0.5);
+
+    /* Sidebar */
+    --sidebar-background: 220 14% 12%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 220 16% 10%;
+    --sidebar-accent: 220 12% 18%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 12% 18%;
+    --sidebar-ring: 38 92% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Tajawal', 'Poppins', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  /* RTL Support with proper spacing */
+  [dir="rtl"] {
+    font-family: 'Tajawal', sans-serif;
+    letter-spacing: 0.02em;
+    word-spacing: 0.05em;
+  }
+
+  [dir="ltr"] {
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+    letter-spacing: -0.02em;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    letter-spacing: 0;
+  }
+
+  p,
+  li,
+  span {
+    line-height: 1.8;
+  }
+}
+
+@layer components {
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-gold);
+  }
+
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-gold {
+    background-image: var(--gradient-gold);
+  }
+
+  .bg-gradient-hero {
+    background-image: var(--gradient-hero);
+  }
+
+  /* Brand CTA Gradients - Use these for consistent CTAs */
+  .bg-gradient-cta {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--navy-dark)) 100%);
+  }
+
+  .bg-gradient-cta-warm {
+    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(28, 90%, 45%) 100%);
+  }
+
+  /* Hayah/Special Education Theme */
+  .bg-gradient-hayah {
+    background: linear-gradient(135deg, #10b981 0%, #0d9488 50%, #06b6d4 100%);
+  }
+
+  .bg-gradient-hayah-dark {
+    background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+
+  /* Decorative Elements */
+  .divider-gold {
+    @apply h-1 w-16 rounded-full;
+    background-image: var(--gradient-gold);
+  }
+
+  .border-gradient {
+    @apply relative;
+  }
+
+  .border-gradient::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg p-[1px];
+    background: var(--gradient-gold);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Premium Shimmer Effect */
+  .shimmer-bg {
+    background: linear-gradient(90deg,
+        hsl(var(--background)) 0%,
+        hsl(var(--accent) / 0.1) 50%,
+        hsl(var(--background)) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Glow Effects */
+  .glow-gold {
+    box-shadow: 0 0 30px hsl(var(--accent) / 0.3);
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  }
+
+  /* Glass Morphism */
+  .glass {
+    @apply backdrop-blur-md bg-background/60 border border-white/10 shadow-lg;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-xl bg-card/60 border border-white/10 shadow-elevated;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-2;
+    box-shadow: var(--shadow-elevated);
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 40px hsl(var(--accent) / 0.4);
+  }
+
+  /* Animated Border */
+  .border-animated {
+    @apply relative overflow-hidden rounded-lg;
+  }
+
+  .border-animated::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg;
+    padding: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+    background-size: 200% 100%;
+    animation: gradient-shift 3s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /* Text Effects */
+  .text-shimmer {
+    background: linear-gradient(90deg,
+        hsl(var(--foreground)) 0%,
+        hsl(var(--accent)) 50%,
+        hsl(var(--foreground)) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Decorative Shapes */
+  .shape-blob {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  .shape-blob-animated {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation: blob-morph 8s ease-in-out infinite;
+  }
+
+  /* Section Patterns */
+  .pattern-dots {
+    background-image: radial-gradient(hsl(var(--primary) / 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .pattern-grid {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Gradient Mesh Background */
+  .gradient-mesh {
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(at 40% 20%, hsl(var(--primary) / 0.08) 0px, transparent 50%),
+      radial-gradient(at 80% 0%, hsl(var(--accent) / 0.08) 0px, transparent 50%),
+      radial-gradient(at 0% 50%, hsl(var(--primary) / 0.05) 0px, transparent 50%),
+      radial-gradient(at 80% 50%, hsl(var(--accent) / 0.05) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(var(--primary) / 0.08) 0px, transparent 50%);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+
+  /* Staggered Animation Delays */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes blob-morph {
+
+    0%,
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    25% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+
+    50% {
+      border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+    }
+
+    75% {
+      border-radius: 60% 40% 60% 30% / 70% 40% 50% 60%;
+    }
+  }
+
+  /* Scroll-triggered animations */
+  .scroll-animate {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+
+  .scroll-animate.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media print {
+
+  /* Hide non-printable elements */
+  header,
+  footer,
+  nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset background and colors for printing */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* Ensure the calculator/report takes full width */
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Card Styling for Print */
+  .card,
+  .border {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Add Brand Header for Print */
+  body::before {
+    content: "Ahmad Qaoud - ROI Analysis Report";
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1a365d;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+  }
+
+  /* Improve typography for print */
+  h1,
+  h2,
+  h3 {
+    color: #1a365d !important;
+    page-break-after: avoid;
+  }
+
+  p,
+  span,
+  div {
+    color: #2d3748 !important;
+  }
+
+  /* Ensure badges and metrics are visible */
+  .badge {
+    border: 1px solid #e2e8f0 !important;
+    color: #000 !important;
+  }
+}

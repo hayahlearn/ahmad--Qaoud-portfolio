@@ -1,0 +1,221 @@
+{
+    "name": "Digital Brain - Ahmad Qaoud Proxy",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "chat",
+                "options": {}
+            },
+            "name": "Chat Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                100,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "systemMessage": "You are the Digital Brain of Ahmad Qaoud, a Digital Transformation Expert.\nYour goal is to classify the user's intent into one of these categories:\n- TECHNICAL: For questions about architecture, coding, AI, or specific technologies.\n- SALES: For questions about pricing, booking consultations, or hiring.\n- GENERAL: For greetings or general inquiries.\n\nReply ONLY with the category name.",
+                "promptType": "define",
+                "text": "={{$json.message}}",
+                "options": {}
+            },
+            "name": "AI Router",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                300,
+                300
+            ],
+            "credentials": {
+                "openAiApi": {
+                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
+                    "name": "OpenAI Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "dataType": "string",
+                "value1": "={{$json.text}}",
+                "rules": {
+                    "rules": [
+                        {
+                            "value2": "TECHNICAL"
+                        },
+                        {
+                            "value2": "SALES",
+                            "output": 1
+                        },
+                        {
+                            "value2": "GENERAL",
+                            "output": 2
+                        }
+                    ]
+                }
+            },
+            "name": "Switch Intent",
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 1,
+            "position": [
+                500,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "systemMessage": "You are 'Ahmad Qaoud's Digital Twin'. Expert in Software Engineering, Sovereign AI, and Digital Transformation.\n\nContext:\n- You advocate for 'Sovereign AI' (owning the model).\n- You prefer 'NestJS' and 'Supabase' stacks.\n- You use 'n8n' for automation.\n\nAnswer the user's technical question with depth and professionalism. Use Arabic if the input is Arabic.",
+                "text": "={{$('Chat Webhook').item.json.message}}"
+            },
+            "name": "Tech Expert Agent",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                750,
+                150
+            ],
+            "credentials": {
+                "openAiApi": {
+                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
+                    "name": "OpenAI Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "systemMessage": "You are a Sales Consultant for Ahmad Qaoud.\nYour goal is to gently guide the user to book a consultation at '/book' or check the services at '/services'.\nBe professional, concise, and helpful.",
+                "text": "={{$('Chat Webhook').item.json.message}}"
+            },
+            "name": "Sales Agent",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                750,
+                350
+            ],
+            "credentials": {
+                "openAiApi": {
+                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
+                    "name": "OpenAI Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "systemMessage": "You are a helpful assistant for Ahmad Qaoud's website.\nAnswer general greeting warmly and briefly explain what Ahmad does (Digital Transformation & AI).",
+                "text": "={{$('Chat Webhook').item.json.message}}"
+            },
+            "name": "General Agent",
+            "type": "n8n-nodes-base.openAi",
+            "typeVersion": 1,
+            "position": [
+                750,
+                550
+            ],
+            "credentials": {
+                "openAiApi": {
+                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
+                    "name": "OpenAI Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={\n  \"response\": \"{{$json.text}}\",\n  \"intent\": \"{{$('AI Router').item.json.text}}\"\n}",
+                "options": {}
+            },
+            "name": "Response",
+            "type": "n8n-nodes-base.webhookResponse",
+            "typeVersion": 1,
+            "position": [
+                1100,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Chat Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "AI Router",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "AI Router": {
+            "main": [
+                [
+                    {
+                        "node": "Switch Intent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Switch Intent": {
+            "main": [
+                [
+                    {
+                        "node": "Tech Expert Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Sales Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "General Agent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Tech Expert Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Sales Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "General Agent": {
+            "main": [
+                [
+                    {
+                        "node": "Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}
