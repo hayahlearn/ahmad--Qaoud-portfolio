@@ -6,7 +6,7 @@
 # ==========================================
 
 # Configuration
-DOMAIN="valuemaker.net"
+DOMAIN="valuemaker.cloud"
 REPO_URL="https://github.com/hayahlearn/ahmad--Qaoud-portfolio.git"
 APP_DIR="/var/www/$DOMAIN"
 NGINX_CONFIG="/etc/nginx/sites-available/$DOMAIN"
