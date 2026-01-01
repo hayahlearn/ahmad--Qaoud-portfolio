@@ -1,10 +1,8 @@
-```
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Database, HardDrive, ShieldCheck } from "lucide-react";
 import { AssetExplorer } from "@/components/sovereign/AssetExplorer";
-import { motion } from "framer-motion";
 
 interface Stats {
   totalAssets: number;
@@ -49,19 +47,14 @@ export default function SovereignDashboard() {
 
   return (
     <div className="min-h-screen bg-black text-neutral-100 p-8 relative overflow-hidden">
-      {/* Premium Background Effects */}
+      {/* Background Effects */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-emerald-900/20 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-emerald-900/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px]" />
       </div>
 
       <div className="max-w-7xl mx-auto space-y-8 relative z-10">
-        <motion.header 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="space-y-2"
-        >
+        <header className="space-y-2">
           <div className="inline-flex items-center px-3 py-1 rounded-full bg-emerald-900/30 border border-emerald-800 text-emerald-400 text-xs font-medium mb-2">
             <span className="relative flex h-2 w-2 mr-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -75,14 +68,10 @@ export default function SovereignDashboard() {
           <p className="text-neutral-400 max-w-2xl text-lg font-light">
             The central nervous system of your digital assets. Indexed, fortified, and absolute.
           </p>
-        </motion.header>
+        </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
-          >
+          <div className="transition-all duration-300 hover:-translate-y-1">
             <Card className="bg-neutral-900/50 backdrop-blur-xl border-neutral-800 hover:border-emerald-500/30 transition-all duration-300 group">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-neutral-400 group-hover:text-emerald-400 transition-colors">
@@ -97,13 +86,9 @@ export default function SovereignDashboard() {
                 <p className="text-xs text-neutral-500 mt-1">Confirmed unique entities</p>
               </CardContent>
             </Card>
-          </motion.div>
-           
-           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-           >
+          </div>
+
+          <div className="transition-all duration-300 hover:-translate-y-1 delay-100">
             <Card className="bg-neutral-900/50 backdrop-blur-xl border-neutral-800 hover:border-blue-500/30 transition-all duration-300 group">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-neutral-400 group-hover:text-blue-400 transition-colors">
@@ -118,13 +103,9 @@ export default function SovereignDashboard() {
                 <p className="text-xs text-neutral-500 mt-1">Supabase Logic • Drive Storage</p>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
+          <div className="transition-all duration-300 hover:-translate-y-1 delay-200">
             <Card className="bg-neutral-900/50 backdrop-blur-xl border-neutral-800 hover:border-purple-500/30 transition-all duration-300 group">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium text-neutral-400 group-hover:text-purple-400 transition-colors">
@@ -139,19 +120,14 @@ export default function SovereignDashboard() {
                 <p className="text-xs text-neutral-500 mt-1">Logical Deduping Active</p>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
+        <div className="transition-all duration-500 delay-300 translate-y-0">
           {/* Asset Explorer Table */}
           <AssetExplorer />
-        </motion.div>
+        </div>
       </div>
     </div>
   );
 }
-```
