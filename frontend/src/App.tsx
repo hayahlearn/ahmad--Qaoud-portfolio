@@ -29,6 +29,8 @@ const AdminStats = lazy(() => import("./pages/AdminStats"));
 const Tools = lazy(() => import("./pages/tools"));
 const Resources = lazy(() => import("./pages/resources"));
 const SpecialEducation = lazy(() => import("./pages/special-education"));
+const SovereignDashboard = lazy(() => import("./pages/SovereignDashboard"));
+const UploadPortal = lazy(() => import("./pages/UploadPortal"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -54,6 +56,8 @@ const AppRoutes = () => {
         <Route path="/admin/auth" element={<PageTransitionWrapper><AdminAuth /></PageTransitionWrapper>} />
         <Route path="/admin" element={<PageTransitionWrapper><AdminDashboard /></PageTransitionWrapper>} />
         <Route path="/admin/stats" element={<PageTransitionWrapper><AdminStats /></PageTransitionWrapper>} />
+        <Route path="/sovereign" element={<PageTransitionWrapper><SovereignDashboard /></PageTransitionWrapper>} />
+        <Route path="/gatekeeper" element={<PageTransitionWrapper><UploadPortal /></PageTransitionWrapper>} />
         <Route path="/tools" element={<PageTransitionWrapper><Tools /></PageTransitionWrapper>} />
         <Route path="/resources" element={<PageTransitionWrapper><Resources /></PageTransitionWrapper>} />
         <Route path="/special-education" element={<PageTransitionWrapper><SpecialEducation /></PageTransitionWrapper>} />
