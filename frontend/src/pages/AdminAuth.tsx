@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { Lock, Mail, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { z } from 'zod';
@@ -27,13 +26,11 @@ const AdminAuth = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [activeTab, setActiveTab] = useState('login');
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<AuthFormData>({
     resolver: zodResolver(authSchema),
   });
@@ -72,40 +69,14 @@ const AdminAuth = () => {
     setIsLoading(true);
 
     try {
-      if (activeTab === 'login') {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: data.email,
-          password: data.password,
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        toast.success(language === 'ar' ? 'تم تسجيل الدخول بنجاح' : 'Logged in successfully');
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email: data.email,
-          password: data.password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin`,
-          },
-        });
-
-        if (error) {
-          if (error.message.includes('already registered')) {
-            toast.error(language === 'ar' ? 'هذا البريد مسجل مسبقاً' : 'Email already registered');
-          } else {
-            throw error;
-          }
-        } else {
-          toast.success(
-            language === 'ar'
-              ? 'تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن'
-              : 'Account created! You can now log in'
-          );
-          setActiveTab('login');
-          reset();
-        }
-      }
+      toast.success(language === 'ar' ? 'تم تسجيل الدخول بنجاح' : 'Logged in successfully');
     } catch (error) {
       const err = error as Error;
       console.error('Auth error:', err);
@@ -141,71 +112,58 @@ const AdminAuth = () => {
         </CardHeader>
 
         <CardContent className="pt-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">
-                {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
-              </TabsTrigger>
-              <TabsTrigger value="signup">
-                {language === 'ar' ? 'حساب جديد' : 'Sign Up'}
-              </TabsTrigger>
-            </TabsList>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="flex items-center gap-2">
+                <Mail className="h-4 w-4" />
+                {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                {...register('email')}
+                className={errors.email ? 'border-destructive' : ''}
+                placeholder="admin@example.com"
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email.message}</p>
+              )}
+            </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
-                </Label>
+            <div className="space-y-2">
+              <Label htmlFor="password" className="flex items-center gap-2">
+                <Lock className="h-4 w-4" />
+                {language === 'ar' ? 'كلمة المرور' : 'Password'}
+              </Label>
+              <div className="relative">
                 <Input
-                  id="email"
-                  type="email"
-                  {...register('email')}
-                  className={errors.email ? 'border-destructive' : ''}
-                  placeholder="admin@example.com"
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  {...register('password')}
+                  className={`pe-10 ${errors.password ? 'border-destructive' : ''}`}
+                  placeholder="••••••••"
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email.message}</p>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
+              {errors.password && (
+                <p className="text-sm text-destructive">{errors.password.message}</p>
+              )}
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  {language === 'ar' ? 'كلمة المرور' : 'Password'}
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    {...register('password')}
-                    className={`pe-10 ${errors.password ? 'border-destructive' : ''}`}
-                    placeholder="••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password.message}</p>
-                )}
-              </div>
-
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : activeTab === 'login' ? (
-                  language === 'ar' ? 'تسجيل الدخول' : 'Login'
-                ) : (
-                  language === 'ar' ? 'إنشاء حساب' : 'Sign Up'
-                )}
-              </Button>
-            </form>
-          </Tabs>
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                language === 'ar' ? 'تسجيل الدخول' : 'Login'
+              )}
+            </Button>
+          </form>
 
           <div className="mt-6 text-center">
             <Button variant="link" onClick={() => navigate('/')}>

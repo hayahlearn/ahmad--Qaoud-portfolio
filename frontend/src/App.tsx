@@ -12,6 +12,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AnimatePresence } from "framer-motion";
 import PageTransitionWrapper from "@/components/layout/PageTransitionWrapper";
 
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/about"));
 const Services = lazy(() => import("./pages/Services"));
@@ -54,8 +56,13 @@ const AppRoutes = () => {
         <Route path="/roi-calculator" element={<PageTransitionWrapper><Tools /></PageTransitionWrapper>} />
         <Route path="/book" element={<PageTransitionWrapper><BookConsultation /></PageTransitionWrapper>} />
         <Route path="/admin/auth" element={<PageTransitionWrapper><AdminAuth /></PageTransitionWrapper>} />
-        <Route path="/admin" element={<PageTransitionWrapper><AdminDashboard /></PageTransitionWrapper>} />
-        <Route path="/admin/stats" element={<PageTransitionWrapper><AdminStats /></PageTransitionWrapper>} />
+
+        {/* Protected Admin Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin" element={<PageTransitionWrapper><AdminDashboard /></PageTransitionWrapper>} />
+          <Route path="/admin/stats" element={<PageTransitionWrapper><AdminStats /></PageTransitionWrapper>} />
+        </Route>
+
         <Route path="/sovereign" element={<PageTransitionWrapper><SovereignDashboard /></PageTransitionWrapper>} />
         <Route path="/gatekeeper" element={<PageTransitionWrapper><UploadPortal /></PageTransitionWrapper>} />
         <Route path="/tools" element={<PageTransitionWrapper><Tools /></PageTransitionWrapper>} />
