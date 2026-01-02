@@ -1,5 +1,6 @@
 
 import { useState, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { useDropzone } from "react-dropzone";
 import { motion, AnimatePresence } from "framer-motion";
 import { UploadCloud, FileCode, X, CheckCircle, ShieldAlert, Loader2, ArrowRight } from "lucide-react";
@@ -55,9 +56,6 @@ export default function UploadPortal() {
 
     const handleUpload = async () => {
         setIsUploading(true);
-        // Simulation of Atomic Upload Transaction
-        // 1. Upload to Storage (Supabase/Hostinger/Drive)
-        // 2. Insert Record to DB
 
         for (const f of stagedFiles) {
             if (f.status === 'success') continue;
@@ -65,15 +63,58 @@ export default function UploadPortal() {
             // Update status to uploading
             setStagedFiles(prev => prev.map(item => item.id === f.id ? { ...item, status: 'uploading' } : item));
 
-            // Simulate progress
-            await new Promise(r => setTimeout(r, 800)); // Fake network lag
+            try {
+                // 1. Calculate MD5 Hash (Sovereign Fingerprint)
+                const arrayBuffer = await f.file.arrayBuffer();
+                const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer); // Using SHA-256 for better collision resistance
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const contentHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-            // Mark validation success
-            setStagedFiles(prev => prev.map(item => item.id === f.id ? { ...item, status: 'success', progress: 100 } : item));
+                // 2. Upload to Supabase Storage
+                // Path: sovereign_inbox / PROJECT / CODE_filename
+                const storagePath = `${f.classification.project}/${f.proposedCode}_${f.file.name}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('sovereign_inbox')
+                    .upload(storagePath, f.file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                if (uploadError) throw uploadError;
+
+                // 3. Register Asset in Database
+                const { error: dbError } = await supabase
+                    .from('digital_assets')
+                    .insert({
+                        asset_code: f.proposedCode,
+                        project_code: f.classification.project,
+                        main_category: f.classification.mainCategory,
+                        sub_category: f.classification.subCategory,
+                        content_hash: contentHash,
+                        file_name: f.file.name,
+                        content_type: f.file.type,
+                        size_bytes: f.file.size,
+                        storage_path: storagePath,
+                        status: 'pending_drive_sync' // Flag for the backend agent to pick up
+                    });
+
+                // Note: If db insert fails, we should technically clean up the file, 
+                // but for now we'll leave it for the sweeper.
+                if (dbError) throw dbError;
+
+                // Mark validation success
+                setStagedFiles(prev => prev.map(item => item.id === f.id ? { ...item, status: 'success', progress: 100 } : item));
+
+            } catch (error) {
+                console.error('Upload failed:', error);
+                setStagedFiles(prev => prev.map(item => item.id === f.id ? { ...item, status: 'error' } : item));
+                toast.error(`Failed to ingest ${f.file.name}`);
+            }
         }
 
         setIsUploading(false);
-        toast.success("Sovereign Ingestion Complete!");
+        toast.success("Sovereign Ingestion Complete! Assets queued for Drive Sync.");
     };
 
     return (
@@ -148,7 +189,7 @@ export default function UploadPortal() {
                                     <Card className="bg-black/40 border-neutral-800 overflow-hidden relative group">
                                         {/* Status Indicator Bar */}
                                         <div className={`absolute left-0 top-0 bottom-0 w-1 transition-colors ${f.status === 'success' ? 'bg-emerald-500' :
-                                                f.status === 'uploading' ? 'bg-blue-500' : 'bg-neutral-700'
+                                            f.status === 'uploading' ? 'bg-blue-500' : 'bg-neutral-700'
                                             }`} />
 
                                         <CardContent className="p-4 pl-5 flex items-center justify-between">
